@@ -6,25 +6,25 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 # shellcheck disable=SC1091
 source "$DIR/common.sh"
 
-pssh_bin_type_to_test_with="$1"
+cc_ssh_bin_type_to_test_with="$1"
 php_version_to_test_with="$2"
 
-if [ -z "$pssh_bin_type_to_test_with" ]; then
-    pssh_bin_type_to_test_with="development"
+if [ -z "$cc_ssh_bin_type_to_test_with" ]; then
+    cc_ssh_bin_type_to_test_with="development"
 fi
 
-case "$pssh_bin_type_to_test_with" in
+case "$cc_ssh_bin_type_to_test_with" in
     packaged|pkg|p)
-        pssh_bin_to_test_with=$(realpath "$DIR/../dist/pssh")
-        pssh_bin_type_to_test_with="Packaged/Dist ($pssh_bin_to_test_with)"
+        cc_ssh_bin_to_test_with=$(realpath "$DIR/../dist/cc-ssh")
+        cc_ssh_bin_type_to_test_with="Packaged/Dist ($cc_ssh_bin_to_test_with)"
         ;;
     installed|inst|i)
-        pssh_bin_to_test_with="command pssh"
-        pssh_bin_type_to_test_with="Installed ($pssh_bin_to_test_with)"
+        cc_ssh_bin_to_test_with="command cc-ssh"
+        cc_ssh_bin_type_to_test_with="Installed ($cc_ssh_bin_to_test_with)"
         ;;
     *)
-        pssh_bin_to_test_with=$(realpath "$DIR/../pssh")
-        pssh_bin_type_to_test_with="Development ($pssh_bin_to_test_with)"
+        cc_ssh_bin_to_test_with=$(realpath "$DIR/../cc-ssh")
+        cc_ssh_bin_type_to_test_with="Development ($cc_ssh_bin_to_test_with)"
         ;;
 esac
 
@@ -40,19 +40,19 @@ function full_test {
     _php_version="$1"
     pced "Running full test suite with PHP $_php_version"
     switch_php "$_php_version"
-    echo "Testing with PSSH bin: $pssh_bin_type_to_test_with"
+    echo "Testing with CC-SSH bin: $cc_ssh_bin_type_to_test_with"
 
     pced "Testing version output"
-    $pssh_bin_to_test_with version
+    $cc_ssh_bin_to_test_with version
 
     pced "Testing help output"
-    $pssh_bin_to_test_with help
+    $cc_ssh_bin_to_test_with help
 
     pced "Testing help output for add"
-    $pssh_bin_to_test_with help add
+    $cc_ssh_bin_to_test_with help add
 
     pced "Testing search"
-    $pssh_bin_to_test_with search cmp
+    $cc_ssh_bin_to_test_with search cmp
 }
 
 if [ -n "$php_version_to_test_with" ]; then

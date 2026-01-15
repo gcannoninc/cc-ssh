@@ -8,7 +8,7 @@ source "$DIR/test/common.sh"
 
 switch_php latest
 
-cp -f pssh pssh-load.php
+cp -f cc-ssh cc-ssh-load.php
 
 rm -rf docs
 
@@ -21,4 +21,4 @@ elif [ "$1" == "-o" ]; then
     google-chrome "http://localhost:8000"
 fi
 
-rm pssh-load.php
+rm cc-ssh-load.php

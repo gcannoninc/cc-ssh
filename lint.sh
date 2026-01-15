@@ -8,9 +8,9 @@ source "$DIR/test/common.sh"
 
 switch_php latest
 
-cp -f pssh pssh-load.php
+cp -f cc-ssh cc-ssh-load.php
 
-phpcs && rm pssh-load.php && exit 0
+phpcs && rm cc-ssh-load.php && exit 0
 
 echo "==========================================="
 echo "THERE HAS BEEN AN ISSUE - RESOLVE AND RERUN"

@@ -1,23 +1,23 @@
 <?php
 /**
- * PSSH Class File
+ * CC_SSH_Config Class File
  *
- * @package pssh
- * @author  chrisputnam9
+ * @package cc_ssh
+ * @author  BADATAI
  */
 
 /**
- * PSSH Config Class
+ * CC_SSH Config Class
  *
  *  - Provides methods to manage SSH config data
- *  - Used by PSSH which provides the interface
+ *  - Used by CC_SSH which provides the interface
  */
-class PSSH_Config
+class CC_SSH_Config
 {
     /**
      * Map of keys to preferred case
      *
-     *  - Loaded from PSSH_CONFIG_KEYS - see end of file
+     *  - Loaded from CC_SSH_CONFIG_KEYS - see end of file
      *
      * @var array
      */
@@ -199,7 +199,7 @@ class PSSH_Config
             // Make sure host is an array as expected
             if (!is_array($host)) {
                 $this->is_exportable = false;
-                $this->error("Host data with key '$old_key' is not an array - this is unexpected. Please edit the JSON configuration files (in ~/.pssh) manually to resolve this.");
+                $this->error("Host data with key '$old_key' is not an array - this is unexpected. Please edit the JSON configuration files (in ~/.central-command/ssh) manually to resolve this.");
             }
             $old_key = trim($old_key);
 
@@ -241,7 +241,7 @@ class PSSH_Config
                     $this->warn(
                         "Unable to update host key from '$old_key' to '$potential_new_key' to align with primary alias.\n" .
                         "Key '$potential_new_key' is already in use by another host.\n" .
-                        "The situation can be resolved by manually editing the JSON configuration files (in ~/.pssh)"
+                        "The situation can be resolved by manually editing the JSON configuration files (in ~/.central-command/ssh)"
                     );
                 }
             }
@@ -257,7 +257,7 @@ class PSSH_Config
             $this->error(
                 "Aborting clean - something went wrong and the cleaned host count would differ from the original host count.\n" .
                 "Aborting to avoid losing data - this is very likely indicative of a bug and should be reported.\n" .
-                "Review JSON configuration files (in ~/.pssh) manually to isolate a potential cause."
+                "Review JSON configuration files (in ~/.central-command/ssh) manually to isolate a potential cause."
             );
         }
 
@@ -567,16 +567,16 @@ class PSSH_Config
     }//end host_diff()
 
     /**
-     * Merge the loaded host configurations into a separate set of host configurations (instance of PSSH_Config).
+     * Merge the loaded host configurations into a separate set of host configurations (instance of CC_SSH_Config).
      *
      *  - When there are conflicts, they will be placed in a separate set of host configurations for manual review
      *
-     * @param PSSH_Config $target   Configuration to merge into.
-     * @param PSSH_Config $override Configuration where conflicts are placed for manual review.
+     * @param CC_SSH_Config $target   Configuration to merge into.
+     * @param CC_SSH_Config $override Configuration where conflicts are placed for manual review.
      *
      * @return void
      */
-    public function merge(PSSH_Config $target, PSSH_Config $override)
+    public function merge(CC_SSH_Config $target, CC_SSH_Config $override)
     {
         $init = $this->initData();
 
@@ -753,7 +753,7 @@ class PSSH_Config
             sort($original_keys);
             $this->warn(
                 'Unknown Config Key(s) Present' .
-                ' - if these are valid, the PSSH code should be updated to know about them.' .
+                ' - if these are valid, the CC_SSH code should be updated to know about them.' .
                 "\nThe following keys were not recognized:\n"
             );
             $this->output($original_keys);
@@ -1307,7 +1307,7 @@ class PSSH_Config
     }//end __call()
 }//end class
 
-PSSH_Config::$CONFIG_KEYS = $PSSH_CONFIG_KEYS;
+CC_SSH_Config::$CONFIG_KEYS = $CC_SSH_CONFIG_KEYS;
 
 // Note: leave the end tag for packaging
 ?>

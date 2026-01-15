@@ -1,19 +1,19 @@
 <?php
 /**
- * PSSH Class File
+ * CC_SSH Class File
  *
- * @package pssh
- * @author  chrisputnam9
+ * @package cc_ssh
+ * @author  BADATAI
  */
 
 /**
- * PSSH - PHP SSH Configuration Management Tool
+ * CC_SSH - Central Command SSH Configuration Management Tool
  *
- *  - Defines the PSSH CLI tool
+ *  - Defines the CC_SSH CLI tool
  *  - Provides the user interface
- *  - Uses PSSH_Config to interact with SSH config data
+ *  - Uses CC_SSH_Config to interact with SSH config data
  */
-class PSSH extends Console_Abstract
+class CC_SSH extends Console_Abstract
 {
     /**
      * Current tool version
@@ -27,7 +27,14 @@ class PSSH extends Console_Abstract
      *
      * @var string
      */
-    public const SHORTNAME = 'pssh';
+    public const SHORTNAME = 'cc-ssh';
+
+    /**
+     * Central Command config subdirectory name.
+     *
+     * @var string
+     */
+    public const CONFIG_SUBDIR = 'ssh';
 
     /**
      * Callable Methods / Sub-commands
@@ -122,7 +129,7 @@ class PSSH extends Console_Abstract
      * Default JSON config import path
      *
      *  - The location to which existing SSH config is imported when the 'import' command is run.
-     *  - Default set in initConfig - ~/.pssh/ssh_config_imported.json
+     *  - Default set in initConfig - ~/.central-command/ssh/ssh_config_imported.json
      *
      * @var string
      * @api
@@ -187,13 +194,13 @@ class PSSH extends Console_Abstract
     /**
      * The URL to check for updates
      *
-     *  - PSSH will check the README file - typical setup
+     *  - CC_SSH will check the README file - typical setup
      *
      * @var string
-     * @see PCon::update_version_url
+     * @see CC_Con::update_version_url
      * @api
      */
-    public $update_version_url = "https://raw.githubusercontent.com/chrisputnam9/pssh/master/README.md";
+    public $update_version_url = "https://raw.githubusercontent.com/gcannoninc/cc-ssh/master/README.md";
 
     /**
      * Help info for add method
@@ -236,7 +243,7 @@ class PSSH extends Console_Abstract
         // Sync before - to get latest data
         $this->sync();
 
-        $config = new PSSH_Config($this);
+        $config = new CC_SSH_Config($this);
 
         $this->hr();
         $this->output('ADDING SSH HOST');
@@ -376,7 +383,7 @@ class PSSH extends Console_Abstract
         $exportable = true;
         foreach ($paths as $path) {
             $this->log("Cleaning '$path'");
-            $config = new PSSH_Config($this);
+            $config = new CC_SSH_Config($this);
             $config->readJSON($path);
             $config->clean();
             $exportable = $exportable && $config->isExportable();
@@ -391,7 +398,7 @@ class PSSH extends Console_Abstract
 
         // Do a final clean & getAliasMap across all files
         // - primarily just to check for duplicate aliases
-        $config = new PSSH_Config($this);
+        $config = new CC_SSH_Config($this);
         $config->readJSON($paths);
         $config->clean();
         $config->getAliasMap();
@@ -435,14 +442,14 @@ class PSSH extends Console_Abstract
         if (! $exportable) {
             $this->error(
                 "Export aborted to prevent issues with SSH config.\n" .
-                "Review errors and warnings (review again if needed with `pssh clean`) and then try again."
+                "Review errors and warnings (review again if needed with `cc-ssh clean`) and then try again."
             );
         }
 
         // Backup target SSH config
         $this->backup($target);
 
-        $config = new PSSH_Config($this);
+        $config = new CC_SSH_Config($this);
         $config->readJSON($sources);
         $config->writeSSH($target);
 
@@ -482,7 +489,7 @@ class PSSH extends Console_Abstract
             $this->backup($target);
         }
 
-        $config = new PSSH_Config($this);
+        $config = new CC_SSH_Config($this);
         $config->readSSH($source);
         $config->clean();
         $config->writeJSON($target);
@@ -524,7 +531,7 @@ class PSSH extends Console_Abstract
         $any_success = false;
 
         foreach ($paths as $config_path) {
-            $config = new PSSH_Config($this);
+            $config = new CC_SSH_Config($this);
             $config->readJSON($config_path);
 
             if ($config->deleteHost($alias)) {
@@ -590,7 +597,7 @@ class PSSH extends Console_Abstract
 
         // Check each file for matching host data
         foreach ($paths as $config_path) {
-            $config = new PSSH_Config($this);
+            $config = new CC_SSH_Config($this);
             $config->readJSON($config_path);
             $key = $config->getHostKey($alias);
             $data = $config->getHosts($key);
@@ -619,7 +626,7 @@ class PSSH extends Console_Abstract
         }
 
         // Load up the file we're going to be editing
-        $config = new PSSH_Config($this);
+        $config = new CC_SSH_Config($this);
         $config->readJSON($config_path);
 
         $host_data = $data[0];
@@ -725,7 +732,7 @@ class PSSH extends Console_Abstract
      *                                Defaults to false when prompting.
      * @param string  $team_config    The config the team from which to pull SSH keys (if copying to host).
      *                                Will prompt if not passed and if $copy_team_keys is true-ish.
-     * @param boolean $cli            Whether to run custom CLI setup script on server (if configured - PSSH::$cli_script)
+     * @param boolean $cli            Whether to run custom CLI setup script on server (if configured - CC_SSH::$cli_script)
      *                                Will prompt if not passed and if $cli_script is configured.
      *
      * @return void
@@ -743,7 +750,7 @@ class PSSH extends Console_Abstract
             }
 
             if ($copy_team_keys) {
-                $config = new PSSH_Config($this);
+                $config = new CC_SSH_Config($this);
                 if (is_null($team_config)) {
                     $team_config = $this->select($this->json_config_paths, 'Config for team keys');
                 }
@@ -824,13 +831,13 @@ ____KEYS____;
         $this->backup($override_path);
 
         $this->output("Merging config...");
-        $source = new PSSH_Config($this);
+        $source = new CC_SSH_Config($this);
         $source->readJSON($source_path);
 
-        $target = new PSSH_Config($this);
+        $target = new CC_SSH_Config($this);
         $target->readJSON($target_path);
 
-        $override = new PSSH_Config($this);
+        $override = new CC_SSH_Config($this);
         $override->readJSON($override_path);
 
         $source->merge($target, $override);
@@ -873,7 +880,7 @@ ____KEYS____;
         $this->log("Searching config files:");
         $this->log($paths);
 
-        $config = new PSSH_Config($this);
+        $config = new CC_SSH_Config($this);
         $config->readJSON($paths);
 
         $results = $config->search($terms);
@@ -895,7 +902,7 @@ ____KEYS____;
                 [
                     'template' => "{_alias_display|%-'.50s} {ssh:user}{ssh:hostname|@%s}{ssh:port|:%s}",
                     'reload_function' => function ($reload_data) {
-                        $config = new PSSH_Config($this);
+                        $config = new CC_SSH_Config($this);
                         $config->readJSON($reload_data['paths']);
                         $results = $config->search($reload_data['terms']);
                         foreach ($results as $key => $host) {
@@ -1066,9 +1073,26 @@ GITGNORE;
 
         return parent::initConfig();
     }//end initConfig()
+
+    /**
+     * Get the config directory path
+     *
+     * Overrides parent to use Central Command directory structure:
+     * ~/.central-command/ssh/
+     *
+     * @return string Full path to config directory.
+     */
+    public function getConfigDir(): string
+    {
+        if (is_null($this->config_dir)) {
+            $this->config_dir = $this->getHomeDir() . DS . '.central-command' . DS . static::CONFIG_SUBDIR;
+        }
+
+        return $this->config_dir;
+    }//end getConfigDir()
 }//end class
 
-PSSH::run($argv);
+CC_SSH::run($argv);
 
 // Note: leave the end tag for packaging
 ?>
