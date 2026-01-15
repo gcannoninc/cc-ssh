@@ -1,1 +1,1 @@
-../pcon/test/common.sh
+../cc-con/test/common.sh

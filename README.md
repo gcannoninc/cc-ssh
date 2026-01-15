@@ -1,79 +1,83 @@
-# PSSH - PHP SSH Configuration Management Tool
-This tool aids in managing your SSH configuration file (~/.ssh/config)
+# CC-SSH - Central Command SSH Configuration Management Tool
+
+A PHP-based SSH configuration management tool from the Central Command CLI suite.
 
 Primary features include:
  - Ability to sync and share SSH configuration among multiple users
- - Abiliity to merge multiple configurations - ie. personal and work
+ - Ability to merge multiple configurations - ie. personal and work
  - Interface to manage configurations - ie. search, edit, delete, and create new host configurations
  - Ability to initialize hosts - copy individual/team keys and optionally run a custom script install
 
-# Latest Version
+## Latest Version
 
-## Download Latest Version (2.7.0):
-https://raw.githubusercontent.com/chrisputnam9/pssh/master/dist/pssh
+### Download Latest Version (2.7.0):
+https://raw.githubusercontent.com/gcannoninc/cc-ssh/master/dist/cc-ssh
 
-## Latest Version Hash (md5):
+### Latest Version Hash (md5):
 f832bfbe074be1c94b6772787e9c5ee7
 
-# Getting Started
+## Getting Started
 
 Quick getting started information for the most common use case.
 
-## Install PSSH
+### Install CC-SSH
+
 1. Make sure you have PHP, or [install it if not](http://php.net/manual/en/install.php)
 
 2. Run this code in a download folder or temporary location:
 
-        curl https://raw.githubusercontent.com/chrisputnam9/pssh/master/dist/pssh > pssh
-        chmod +x pssh
-        sudo ./pssh install
+        curl https://raw.githubusercontent.com/gcannoninc/cc-ssh/master/dist/cc-ssh > cc-ssh
+        chmod +x cc-ssh
+        sudo ./cc-ssh install
 
 3. Test success by running in a new terminal session:
 
-        pssh version
+        cc-ssh version
 
-## Import Existing Config
-1. Add git URL for your company's shared SSH config into ~/.pssh/config.hjson (sync:), then run:
+### Import Existing Config
 
-        pssh sync
+1. Add git URL for your company's shared SSH config into ~/.central-command/ssh/config.hjson (sync:), then run:
 
-2. Import your current config to a new JSON file (~/.pssh/ssh\_config\_imported.json)
+        cc-ssh sync
 
-        pssh import
+2. Import your current config to a new JSON file (~/.central-command/ssh/ssh\_config\_imported.json)
+
+        cc-ssh import
 
 3. Merge your imported json into your synced work json file, putting overrides into a personal file
    ('ssh_config_personal.json' is automatically ignored by the default .gitignore, so you'll need to sync/back this up yourself as needed)
 
-        pssh merge ~/.pssh/ssh_config_imported.json ~/.pssh/ssh_config_work.json ~/.pssh/ssh_config_personal.json
+        cc-ssh merge ~/.central-command/ssh/ssh_config_imported.json ~/.central-command/ssh/ssh_config_work.json ~/.central-command/ssh/ssh_config_personal.json
 
 4. Review the personal file - conflicts will be placed here, some may require manual adjustments.
 
-5. Diff the work file to make sure you don't sync something you wanted to keep private!  Move host
+5. Diff the work file to make sure you don't sync something you wanted to keep private! Move host
    entries to personal file as needed.
 
-        cd ~/.pssh
+        cd ~/.central-command/ssh
         git difftool
 
 6. Export new JSON files to ssh config and test
 
-        pssh export
+        cc-ssh export
         ssh oneofyourhosts
 
 7. Sync again when ready
 
-        pssh sync
+        cc-ssh sync
 
-# Updating
+## Updating
+
 The script will periodically check for updates automatically and inform you when an update is
 available.
 
 If an update is available, you can run the following to install the update:
 
-    sudo pssh update
+    sudo cc-ssh update
 
-# USAGE:
+## USAGE:
 
-    pssh <method> (argument1) (argument2) ... [options]
+    cc-ssh <method> (argument1) (argument2) ... [options]
 
     -------------------------------------------------------------------------------------------------------------------------------------------------------
     | METHOD                        | INFO                                                                                                                |
@@ -99,7 +103,7 @@ If an update is available, you can run the following to install the update:
     | update                        | Update an installed PHP console tool                                                                                |
     | version                       | Output version information                                                                                          |
     -------------------------------------------------------------------------------------------------------------------------------------------------------
-    To get more help for a specific method:  pssh help <method>
+    To get more help for a specific method:  cc-ssh help <method>
 
     -------------------------------------------------------------------------------------------------------------------------------------------------------
     | OPTION                        | TYPE                                       | INFO                                                                   |
@@ -128,17 +132,17 @@ If an update is available, you can run the following to install the update:
     Use no- to set boolean option to false - eg. --no-stamp-lines
     =======================================================================================================================================================
 
-# Troubleshooting & Common Issues
+## Troubleshooting & Common Issues
 
-## See General PCon Issues
-[See general PCon issues which may apply](https://github.com/chrisputnam9/pcon#troubleshooting--common-issues)
+### See General CC-Con Issues
+[See general CC-Con issues which may apply](https://github.com/gcannoninc/cc-con#troubleshooting--common-issues)
 
-## Error about /root/.ssh/config
-During install, in some cases, ~/.pssh/config.hjson could have root's ssh config path set instead of yours.
+### Error about /root/.ssh/config
+During install, in some cases, ~/.central-command/ssh/config.hjson could have root's ssh config path set instead of yours.
 
-Edit your ~/.pssh/config.hjson - search for 'root' and fix any incorrect paths to point to your actual files (typically /home/youruser/... eg. /home/youruser/.ssh/config).
+Edit your ~/.central-command/ssh/config.hjson - search for 'root' and fix any incorrect paths to point to your actual files (typically /home/youruser/... eg. /home/youruser/.ssh/config).
 
-# Miscellaneous
+## Miscellaneous
 Many thanks to all who've helped with suggestions, testing, issue reporting, and motivation!
 
 - [Theodore Slechta](https://github.com/theodoreslechta)

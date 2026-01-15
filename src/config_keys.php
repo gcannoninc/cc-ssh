@@ -1,19 +1,19 @@
 <?php
 /**
- * Defines $PSSH_CONFIG_KEYS
+ * Defines $CC_SSH_CONFIG_KEYS
  *
- * @package pssh
- * @author  chrisputnam9
+ * @package cc_ssh
+ * @author  BADATAI
  */
 
 /*
  * @var array Reference of available SSH configuration keys.
  *            Map from lowercase to correct case to allow case-insensitive
- *            configuration in PSSH
+ *            configuration in CC_SSH
  * @global
- * @used-by PSSH_Config
+ * @used-by CC_SSH_Config
  */
-$PSSH_CONFIG_KEYS = [
+$CC_SSH_CONFIG_KEYS = [
     "addkeystoagent" => "AddKeysToAgent",
     "addressfamily" => "AddressFamily",
     "batchmode" => "BatchMode",

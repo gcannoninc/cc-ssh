@@ -1,13 +1,13 @@
 #!/usr/bin/env php
 <?php
 /**
- * Acts as the entry pointkduring development; initializes the tool
+ * Acts as the entry point during development; initializes the tool
  *
  * - Sets a few constants and loads in primary logic files
- * - **NOTE:** actual file is "pcon" with no extension - name temporarily modified for linting & doc generation
+ * - **NOTE:** actual file is "cc-ssh" with no extension - name temporarily modified for linting & doc generation
  *
- * @package pcon
- * @author  chrisputnam9
+ * @package cc_ssh
+ * @author  BADATAI
  */
 
 // Miscellaneous configuration
@@ -28,26 +28,26 @@ if (! defined('PACKAGED')) {
     define('PACKAGED', false);
 }
 
-// Path to pcon console_abstract.php
+// Path to cc-con console_abstract.php
 if (! defined('CONSOLE_ABSTRACT_PATH')) {
-    // For PCon specifically, check src
+    // For CC_Con specifically, check src
     $console_path =
         __DIR__ . DIRECTORY_SEPARATOR .
         'src' . DIRECTORY_SEPARATOR .
         'console_abstract.php';
 
-    // For other tools, check pcon
+    // For other tools, check cc-con
     if (!is_file($console_path)) {
         $console_path =
             __DIR__ . DIRECTORY_SEPARATOR .
-            'pcon' . DIRECTORY_SEPARATOR .
+            'cc-con' . DIRECTORY_SEPARATOR .
             'src' . DIRECTORY_SEPARATOR .
             'console_abstract.php';
     }
 
     if (!is_file($console_path)) {
         echo "ERROR: Console Abstract not found - '" . $console_path . "'\n";
-        echo " - Symlink your pcon folder to '" . __DIR__ . DIRECTORY_SEPARATOR . "pcon' to resolve this issue\n";
+        echo " - Symlink your cc-con folder to '" . __DIR__ . DIRECTORY_SEPARATOR . "cc-con' to resolve this issue\n";
         echo "----------------------------------------\n";
         throw new Exception("Missing console abstract");
     }
@@ -66,8 +66,8 @@ if (! defined('CONSOLE_ABSTRACT_PATH')) {
  */
 $src_includes = array(
     __DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'config_keys.php',
-    __DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'pssh_config.php',
-    __DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'pssh.php',
+    __DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'cc_ssh_config.php',
+    __DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'cc_ssh.php',
 );
 
 
